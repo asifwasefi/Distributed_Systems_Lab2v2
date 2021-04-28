@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "2d2ca8ef-4486-4532-82e5-c853500c575f",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "request whole database",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/db/usersList",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"usersList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Database Entry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountHolder\": {\r\n        \"firstName\": \"asif\",\r\n        \"lastName\": \"wasefi\"\r\n    },\r\n    \"balance\": 40.0,\r\n    \"typeAccount\": \"single\",\r\n    \"username\": \"user1\",\r\n    \"password\": \"pass1\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/db/addEntry",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"addEntry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get entry by UsrPasswd",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "user1 pass1"
+				},
+				"url": {
+					"raw": "localhost:8080/db/getEntry",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"getEntry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Entry by UsrPasswd",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "user1 pass1"
+				},
+				"url": {
+					"raw": "localhost:8080/db/deleteEntry",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"deleteEntry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "user1 pass1 20"
+				},
+				"url": {
+					"raw": "localhost:8080/db/deposit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "withdraw",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "user1 pass1 50"
+				},
+				"url": {
+					"raw": "localhost:8080/db/withdraw",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Balance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "user1 pass1"
+				},
+				"url": {
+					"raw": "localhost:8080/db/getBalance",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"db",
+						"getBalance"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
