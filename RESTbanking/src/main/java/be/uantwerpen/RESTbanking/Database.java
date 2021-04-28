@@ -38,6 +38,7 @@ public class Database {
         Person p1 = new Person(userDetails.getAccountHolder().getFirstName(),userDetails.getAccountHolder().getLastName());
         Account acc1 = new Account(p1,userDetails.getUsername(),userDetails.getPassword());
         acc1.setTypeAccount(userDetails.getTypeAccount());
+        acc1.setBalance(userDetails.getBalance());
         getDatabase().put(userDetails.getUsername(),acc1);
 
         return "entry added successfully";
@@ -47,8 +48,24 @@ public class Database {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<Account> getEntry(@RequestBody String usernameANDpassword) {
-        String [] temp = usernameANDpassword.split(" ",2);//split string into two by spaces ie username space password
-       return getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(temp[0])==0 && account.getPassword().equals(temp[1])).collect(Collectors.toList());
+        String [] usrPass = usernameANDpassword.split(" ",2);//split string into two by spaces ie username space password
+       return getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPass[0])==0 && account.getPassword().equals(usrPass[1])).collect(Collectors.toList());
+    }
+
+
+    @DeleteMapping(path = "/deleteEntry",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public String deleteEntry(@RequestBody String usernameANDpassword) {
+        String [] usrPass = usernameANDpassword.split(" ",2);//split string into two by spaces ie username space password
+        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPass[0])==0 && account.getPassword().equals(usrPass[1])).collect(Collectors.toList());
+        if (accountList.isEmpty())
+            return "Account not found with given credentials";
+        else
+        {
+            getDatabase().remove(usrPass[0]);
+            return "removed successfully";
+        }
     }
 
     @PostMapping(path = "/deposit",

@@ -50,6 +50,18 @@ public class Account {
         return balance;
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String deposit(long depositAmount) {
         balance += depositAmount;
         return "amount deposited = " + depositAmount;
