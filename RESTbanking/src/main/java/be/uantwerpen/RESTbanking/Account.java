@@ -1,5 +1,7 @@
 package be.uantwerpen.RESTbanking;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * Created by asif on 27/04/2021
  */
@@ -11,6 +13,7 @@ public class Account {
     private String typeAccount = "single";
     private String username;
     private String password;
+    private Semaphore semaphore = new Semaphore(1,true);
 
     public Account(Person accountHolder, String username, String password) {
         this.accountHolder = accountHolder;
@@ -51,7 +54,23 @@ public class Account {
     }
 
     public void setBalance(double balance) {
+        if (semaphore.availablePermits()==0) System.out.println("account in use, waiting for account to be ready");
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+         // enforce a delay so other threads get blocked until this delay is over
+//        for (int i=0;i<1000;i++)
+//        {
+//            for (int j=0;j<1000;j++)
+//            {
+//                int k = j+i;
+//            }
+//        }
         this.balance = balance;
+        semaphore.release();
     }
 
     public void setUsername(String username) {
@@ -63,21 +82,21 @@ public class Account {
     }
 
     public String deposit(double depositAmount) {
-        balance += depositAmount;
+        this.setBalance(this.getBalance()+depositAmount);
         return "amount deposited = " + depositAmount;
     }
 
     public String withdraw(double withdrawAmount)
     {
-        if(balance >= withdrawAmount)
+        if(this.getBalance() >= withdrawAmount)
 
         {
-            balance-= withdrawAmount;
+            this.setBalance(this.getBalance()-withdrawAmount);
             return "amount withdrawn: "+ withdrawAmount;
         }
         else
         {
-            return "To withdraw amount "+withdrawAmount+" higher than balance "+balance;
+            return "To withdraw amount "+withdrawAmount+" higher than balance "+this.getBalance();
         }
     }
 
