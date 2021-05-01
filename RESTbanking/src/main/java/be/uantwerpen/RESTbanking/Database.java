@@ -55,42 +55,39 @@ public class Database {
     @DeleteMapping(path = "/deleteEntry",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public String deleteEntry(@RequestBody String usernameANDpassword) {
-        String [] usrPass = usernameANDpassword.split(" ",2);//split string into two by spaces ie username space password
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPass[0])==0 && account.getPassword().equals(usrPass[1])).collect(Collectors.toList());
+    public String deleteEntry(@RequestParam String username, String password) {
+        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
         {
-            getDatabase().remove(usrPass[0]);
+            getDatabase().remove(username);
             return "removed successfully";
         }
     }
 
-    @PostMapping(path = "/deposit",
+    @PutMapping(path = "/deposit",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public String deposit(@RequestBody String usernameANDpasswordANDdepositAmount)
+    public String deposit(@RequestParam String username, String password, Double depositAmount)
     {
-        String [] usrPassDep = usernameANDpasswordANDdepositAmount.split(" ",3);//split into username password and deposit amount
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPassDep[0])==0 && account.getPassword().equals(usrPassDep[1])).collect(Collectors.toList());
+       List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
-            return accountList.get(0).deposit(Long.parseLong(usrPassDep[2]));
+            return accountList.get(0).deposit(depositAmount);
     }
 
-    @PostMapping(path = "/withdraw",
+    @PutMapping(path = "/withdraw",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public String withdraw(@RequestBody String usernameANDpasswordANDwithdrawAmount)
+    public String withdraw(@RequestParam String username, String password, Double withdrawAmount)
     {
-        String [] usrPassWithd = usernameANDpasswordANDwithdrawAmount.split(" ",3);//split into username password and deposit amount
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPassWithd[0])==0 && account.getPassword().equals(usrPassWithd[1])).collect(Collectors.toList());
+        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
-            return accountList.get(0).withdraw(Long.parseLong(usrPassWithd[2]));
+            return accountList.get(0).withdraw(withdrawAmount);
     }
 
     @GetMapping(path = "/getBalance",

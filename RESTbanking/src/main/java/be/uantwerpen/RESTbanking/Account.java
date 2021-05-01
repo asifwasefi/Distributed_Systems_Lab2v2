@@ -62,7 +62,7 @@ public class Account {
         this.password = password;
     }
 
-    public String deposit(long depositAmount) {
+    public String deposit(double depositAmount) {
         balance += depositAmount;
         return "amount deposited = " + depositAmount;
     }

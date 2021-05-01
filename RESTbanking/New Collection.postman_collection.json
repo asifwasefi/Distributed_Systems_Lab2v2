@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2d2ca8ef-4486-4532-82e5-c853500c575f",
+		"_postman_id": "63cd7dd5-8ce7-4e0d-868f-52e8d56fe2f9",
 		"name": "New Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -37,12 +37,13 @@
 					{
 						"key": "Accept",
 						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountHolder\": {\r\n        \"firstName\": \"asif\",\r\n        \"lastName\": \"wasefi\"\r\n    },\r\n    \"balance\": 40.0,\r\n    \"typeAccount\": \"single\",\r\n    \"username\": \"user1\",\r\n    \"password\": \"pass1\"\r\n}"
+					"raw": "{\r\n    \"accountHolder\": {\r\n        \"firstName\": \"wout\",\r\n        \"lastName\": \"uytsel\"\r\n    },\r\n    \"balance\": 40.0,\r\n    \"typeAccount\": \"joint\",\r\n    \"username\": \"user2\",\r\n    \"password\": \"pass2\"\r\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/db/addEntry",
@@ -60,9 +61,6 @@
 		},
 		{
 			"name": "Get entry by UsrPasswd",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [
@@ -70,19 +68,10 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "user1 pass1"
-				},
 				"url": {
-					"raw": "localhost:8080/db/getEntry",
+					"raw": "localhost:8080/db/getEntry?username=user2&password=pass2",
 					"host": [
 						"localhost"
 					],
@@ -90,6 +79,16 @@
 					"path": [
 						"db",
 						"getEntry"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user2"
+						},
+						{
+							"key": "password",
+							"value": "pass2"
+						}
 					]
 				}
 			},
@@ -104,19 +103,10 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "user1 pass1"
-				},
 				"url": {
-					"raw": "localhost:8080/db/deleteEntry",
+					"raw": "localhost:8080/db/deleteEntry?username=user1&password=pass1",
 					"host": [
 						"localhost"
 					],
@@ -124,6 +114,16 @@
 					"path": [
 						"db",
 						"deleteEntry"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user1"
+						},
+						{
+							"key": "password",
+							"value": "pass1"
+						}
 					]
 				}
 			},
@@ -132,25 +132,16 @@
 		{
 			"name": "Deposit",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "user1 pass1 20"
-				},
 				"url": {
-					"raw": "localhost:8080/db/deposit",
+					"raw": "localhost:8080/db/deposit?username=user2&password=pass2&depositAmount=25",
 					"host": [
 						"localhost"
 					],
@@ -158,33 +149,38 @@
 					"path": [
 						"db",
 						"deposit"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user2"
+						},
+						{
+							"key": "password",
+							"value": "pass2"
+						},
+						{
+							"key": "depositAmount",
+							"value": "25"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "withdraw",
+			"name": "Withdraw",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "user1 pass1 50"
-				},
 				"url": {
-					"raw": "localhost:8080/db/withdraw",
+					"raw": "localhost:8080/db/withdraw?username=user2&password=pass2&withdrawAmount=10",
 					"host": [
 						"localhost"
 					],
@@ -192,6 +188,20 @@
 					"path": [
 						"db",
 						"withdraw"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user2"
+						},
+						{
+							"key": "password",
+							"value": "pass2"
+						},
+						{
+							"key": "withdrawAmount",
+							"value": "10"
+						}
 					]
 				}
 			},
@@ -199,9 +209,6 @@
 		},
 		{
 			"name": "Balance",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [
@@ -209,19 +216,10 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "user1 pass1"
-				},
 				"url": {
-					"raw": "localhost:8080/db/getBalance",
+					"raw": "localhost:8080/db/getBalance?username=user2&password=pass2",
 					"host": [
 						"localhost"
 					],
@@ -229,6 +227,16 @@
 					"path": [
 						"db",
 						"getBalance"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user2"
+						},
+						{
+							"key": "password",
+							"value": "pass2"
+						}
 					]
 				}
 			},
