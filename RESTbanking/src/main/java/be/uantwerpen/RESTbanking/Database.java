@@ -56,7 +56,7 @@ public class Database {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public String deleteEntry(@RequestParam String username, String password) {
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
+        List<Account> accountList= getEntry(username,password);
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
@@ -71,7 +71,7 @@ public class Database {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public String deposit(@RequestParam String username, String password, Double depositAmount)
     {
-       List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
+       List<Account> accountList= getEntry(username,password);
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
@@ -83,7 +83,7 @@ public class Database {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public String withdraw(@RequestParam String username, String password, Double withdrawAmount)
     {
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
+        List<Account> accountList= getEntry(username,password);
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
@@ -95,7 +95,7 @@ public class Database {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public String getBalance(@RequestParam String username, String password)
     {
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
+        List<Account> accountList= getEntry(username,password);
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
