@@ -47,9 +47,8 @@ public class Database {
     @GetMapping(path = "/getEntry",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<Account> getEntry(@RequestBody String usernameANDpassword) {
-        String [] usrPass = usernameANDpassword.split(" ",2);//split string into two by spaces ie username space password
-       return getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPass[0])==0 && account.getPassword().equals(usrPass[1])).collect(Collectors.toList());
+    public List<Account> getEntry(@RequestParam String username, String password) {
+       return getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
     }
 
 
@@ -97,10 +96,9 @@ public class Database {
     @GetMapping(path = "/getBalance",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public String getBalance(@RequestBody String usernameANDpassword)
+    public String getBalance(@RequestParam String username, String password)
     {
-        String [] usrPass = usernameANDpassword.split(" ",2);//split into username password
-        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(usrPass[0])==0 && account.getPassword().equals(usrPass[1])).collect(Collectors.toList());
+        List<Account> accountList= getDatabase().values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
         if (accountList.isEmpty())
             return "Account not found with given credentials";
         else
