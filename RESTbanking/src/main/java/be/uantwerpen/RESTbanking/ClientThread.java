@@ -11,11 +11,13 @@ public class ClientThread extends Thread {
 
     HashMap<String,Account> db = Database.getDatabase();
     private String username,password;
-    int i = 0;
+    private String addOrMinus;private double amount;
 
-    public ClientThread(String username, String password) {
+    public ClientThread(String username, String password, String addOrMinus, double amount) {
         this.username = username;
         this.password = password;
+        this.addOrMinus = addOrMinus;
+        this.amount = amount;
     }
 
     @Override
@@ -23,11 +25,12 @@ public class ClientThread extends Thread {
         List<Account> accountList = db.values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
         if( ! accountList.isEmpty())
         {
-            i++;
-            if(i%2==0)
-                accountList.get(0).deposit(1);
-            else
-                accountList.get(0).withdraw(1);
+            System.out.println(currentThread().getName()+ " depositing/withdrawing");
+            if (addOrMinus.compareToIgnoreCase("deposit")==0)
+                accountList.get(0).deposit(amount);
+            else if(addOrMinus.compareToIgnoreCase("withdraw")==0)
+                accountList.get(0).withdraw(amount);
+            System.out.println(accountList.get(0).getBalance());
         }
         else System.out.println("ClientThread: Account not found with given credentials");
         System.out.println(currentThread().getName()+" ended");

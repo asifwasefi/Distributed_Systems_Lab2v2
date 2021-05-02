@@ -53,27 +53,28 @@ public class Account {
         return balance;
     }
 
-    public String setBalance(double balance) {
+    public void setBalance(double balance) {
 
         if (semaphore.availablePermits()==0)
-            return "\n\naccount in use, waiting for account to be ready";
+            System.out.println("account in use, waiting for account to be ready");
+
         try {
             semaphore.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+    //                     enforce a delay so other threads get blocked until this delay is over
+            for (int i=0;i<1000;i++)
+            {
+                for (int j=0;j<1000;j++)
+                {
+                    int k = j+i;
+                }
+            }
+            this.balance = balance;
+            semaphore.release();
         }
 
-         // enforce a delay so other threads get blocked until this delay is over
-//        for (int i=0;i<1000;i++)
-//        {
-//            for (int j=0;j<1000;j++)
-//            {
-//                int k = j+i;
-//            }
-//        }
-        this.balance = balance;
-        semaphore.release();
-        return "";
     }
 
     public void setUsername(String username) {
