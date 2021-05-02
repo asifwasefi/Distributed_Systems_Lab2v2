@@ -1,5 +1,7 @@
 package be.uantwerpen.RESTbanking;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * Created by asif on 27/04/2021
  */
@@ -11,6 +13,7 @@ public class Account {
     private String typeAccount = "single";
     private String username;
     private String password;
+    private Semaphore semaphore = new Semaphore(1,true);
 
     public Account(Person accountHolder, String username, String password) {
         this.accountHolder = accountHolder;
@@ -52,6 +55,15 @@ public class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
+//        enforce a delay so other threads get blocked until this delay is over
+        for (int i=0;i<1000;i++)
+        {
+            for (int j=0;j<1000;j++)
+            {
+                int k = j+i;
+            }
+        }
+
     }
 
     public void setUsername(String username) {
@@ -63,21 +75,38 @@ public class Account {
     }
 
     public String deposit(double depositAmount) {
-        balance += depositAmount;
-        return "amount deposited = " + depositAmount;
+        if (semaphore.availablePermits()==0)
+            System.out.println("Account in use, cannot deposit");
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.setBalance(this.getBalance()+depositAmount);
+        semaphore.release();
+        return "\namount deposited = " + depositAmount;
     }
 
     public String withdraw(double withdrawAmount)
     {
-        if(balance >= withdrawAmount)
-        
+        if (semaphore.availablePermits()==0)
+            System.out.println("Account in use, cannot withdraw");
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(this.getBalance() >= withdrawAmount)
+
         {
-            balance-= withdrawAmount;
-            return "amount withdrawn: "+ withdrawAmount;
+            this.setBalance(this.getBalance()-withdrawAmount);
+            semaphore.release();
+            return "\namount withdrawn: "+ withdrawAmount;
         }
         else
         {
-            return "To withdraw amount "+withdrawAmount+" higher than balance "+balance;
+            semaphore.release();
+            return "To withdraw amount "+withdrawAmount+" higher than balance "+this.getBalance();
         }
     }
 
