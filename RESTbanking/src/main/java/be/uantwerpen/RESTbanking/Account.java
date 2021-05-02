@@ -54,6 +54,7 @@ public class Account {
     }
 
     public void setBalance(double balance) {
+        
         if (semaphore.availablePermits()==0) System.out.println("account in use, waiting for account to be ready");
         try {
             semaphore.acquire();
