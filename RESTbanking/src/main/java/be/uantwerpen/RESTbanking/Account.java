@@ -53,9 +53,10 @@ public class Account {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        
-        if (semaphore.availablePermits()==0) System.out.println("account in use, waiting for account to be ready");
+    public String setBalance(double balance) {
+
+        if (semaphore.availablePermits()==0)
+            return "\n\naccount in use, waiting for account to be ready";
         try {
             semaphore.acquire();
         } catch (InterruptedException e) {
@@ -72,6 +73,7 @@ public class Account {
 //        }
         this.balance = balance;
         semaphore.release();
+        return "";
     }
 
     public void setUsername(String username) {
@@ -84,7 +86,7 @@ public class Account {
 
     public String deposit(double depositAmount) {
         this.setBalance(this.getBalance()+depositAmount);
-        return "amount deposited = " + depositAmount;
+        return "\namount deposited = " + depositAmount;
     }
 
     public String withdraw(double withdrawAmount)
@@ -93,7 +95,7 @@ public class Account {
 
         {
             this.setBalance(this.getBalance()-withdrawAmount);
-            return "amount withdrawn: "+ withdrawAmount;
+            return "\namount withdrawn: "+ withdrawAmount;
         }
         else
         {
