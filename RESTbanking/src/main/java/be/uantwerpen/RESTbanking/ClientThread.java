@@ -25,7 +25,7 @@ public class ClientThread extends Thread {
         List<Account> accountList = db.values().stream().filter(account -> account.getUsername().compareToIgnoreCase(username)==0 && account.getPassword().equals(password)).collect(Collectors.toList());
         if( ! accountList.isEmpty())
         {
-            System.out.println(currentThread().getName()+ " depositing/withdrawing");
+//            System.out.println(currentThread().getName()+ " depositing/withdrawing");
             if (addOrMinus.compareToIgnoreCase("deposit")==0)
                 accountList.get(0).deposit(amount);
             else if(addOrMinus.compareToIgnoreCase("withdraw")==0)
